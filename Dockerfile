@@ -1,14 +1,16 @@
 FROM python:3.7.3-slim-stretch
 
-RUN mkdir /srv
+RUN mkdir /app
 
-WORKDIR /srv
+WORKDIR /app
 RUN mkdir uploads && mkdir output
 
-ADD templates/ .
+ADD templates/ ./templates/
 ADD requirements.txt .
 ADD splitter.py .
 
 RUN pip install -r requirements.txt
+
+EXPOSE 8080
 
 CMD python splitter.py
