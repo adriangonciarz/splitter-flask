@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+    <body>
+        <title>File successfully uploaded</title>
+        <h1>File uploaded successfully!</h1>
+        <h2>Your file {{ filename }} uploaded successfully</h2>
+        <p>File lines number:<br>{{ total }}</p>
+        <p>File lines unique:<br>{{ unique }}</p>
+        <p>Duplicates:<br>{{ total - unique }}</p>
+        <h2 style = "text-align: center;">Download Options</h2>
+        <form class="download-form" action="{{ url_for('download', filename=filename) }}" method="POST">
+            {{ form.deduplicate }}{{ form.deduplicate.label }}<br>
+            {{ form.split }}{{ form.split.label }}<br>
+            {{ form.batch }}<br>
+            {{ form.submit }}
+        </form>
+    </body>
+</html>
