@@ -1,18 +1,43 @@
-<!doctype html>
-<html>
-    <body>
-        <title>File successfully uploaded</title>
-        <h1>File uploaded successfully!</h1>
-        <h2>Your file {{ filename }} uploaded successfully</h2>
-        <p>File lines number:<br>{{ total }}</p>
-        <p>File lines unique:<br>{{ unique }}</p>
-        <p>Duplicates:<br>{{ total - unique }}</p>
-        <h2 style = "text-align: center;">Download Options</h2>
-        <form class="download-form" action="{{ url_for('download', filename=filename) }}" method="POST">
-            {{ form.deduplicate }}{{ form.deduplicate.label }}<br>
-            {{ form.split }}{{ form.split.label }}<br>
-            {{ form.batch }}<br>
-            {{ form.submit }}
-        </form>
-    </body>
-</html>
+{% extends "layout.html" %}
+{% block title %}Upload successful{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+        <h3>File uploaded successfully!</h3>
+        <h5>Your file <b>{{ filename }}</b> uploaded successfully</h5>
+        <p>File lines number: <b>{{ total }}</b></p>
+        <p>File lines unique: <b>{{ unique }}</b></p>
+        {% set duplicates = total - unique %}
+        {% if duplicates == 0 %}
+            <div class="alert alert-success" role="alert">
+                <p >There was no duplicates in the file!</p>
+            </div>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                <p >Number of duplicates: <b>{{ duplicates }}</b></p>
+            </div>
+        {% endif %}
+        </div>
+        <div class="col-md-12">
+            <hr class="mb-4">
+            <h3>Download Options</h3>
+            <p class="lead">
+                Select do you want to remove duplicate rows from file, then select if you want to split the output into smaller batches.
+                Output file is going to be ZIP containing
+            </p>
+            <form class="download-form" action="{{ url_for('download', filename=filename) }}" method="POST">
+                <div class="custom-control custom-checkbox">
+                    {{ form.deduplicate }}{{ form.deduplicate.label }}
+                </div>
+                <div class="custom-control custom-checkbox">
+                    {{ form.split }}{{ form.split.label }}
+                </div>
+                <div class="custom-control custom-checkbox">
+                {{ form.batch }}
+                </div>
+                <hr class="mb-4">
+                {{ form.submit }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

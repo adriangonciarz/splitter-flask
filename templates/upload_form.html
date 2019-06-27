@@ -1,12 +1,19 @@
-<!doctype html>
-<html>
-    <body>
-        <title>Voucher CSV file splitter</title>
-        <h1>Upload CSV file for splitting</h1>
-        <form method="POST" action="/" enctype="multipart/form-data">
-            {{ form.hidden_tag() }}
-            {{ form.csv_file }}
-            {{ form.submit }}
-        </form>
-    </body>
-</html>
+{% extends "layout.html" %}
+{% block title %}Upload{% endblock %}
+{% block content %}
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">Upload CSV file for splitting</h1>
+            <p class="lead">
+                Provide a CSV file you want to process.
+                After uploading you will be able to choose if you want to remove duplicated from file and whether you want to split the file.
+            </p>
+            <form method="POST" action="/" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                {{ form.csv_file }}
+                <hr class="mb-4">
+                {{ form.submit }}
+            </form>
+        </main>
+    </div>
+{% endblock %}
