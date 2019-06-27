@@ -7,7 +7,7 @@ RUN mkdir uploads && mkdir output
 
 ADD templates/ ./templates/
 ADD requirements.txt .
-ADD splitter.py .
+ADD app.py .
 
 RUN pip install -r requirements.txt
 
