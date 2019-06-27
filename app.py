@@ -2,7 +2,7 @@ import os
 import time
 import zipfile
 
-from flask import Flask, request, redirect, url_for, render_template, send_from_directory, send_file
+from flask import Flask, request, redirect, url_for, render_template, send_file
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileRequired, FileAllowed
 from werkzeug.datastructures import CombinedMultiDict
@@ -22,14 +22,13 @@ app.secret_key = 'SYUDxyWO20'
 class DownloadForm(FlaskForm):
     split = BooleanField('Split the output file?')
     deduplicate = BooleanField('Remove duplicates from output file?')
-    batch = IntegerField("Output file batch size", render_kw={"placeholder": "Output file batch size"})
-    submit = SubmitField("Download files as ZIP")
+    batch = IntegerField("Output file batch size", render_kw={"placeholder": "Output file batch size", 'class': 'form-control'})
+    submit = SubmitField("Download files as ZIP", render_kw={'class': 'btn btn-primary btn-lg'})
 
 
 class UploadForm(FlaskForm):
-    csv_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'CSV files only!')])
-    submit = SubmitField(u'Upload')
-
+    csv_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'CSV files only!')], render_kw={'class': 'form-control-file'})
+    submit = SubmitField('Upload', render_kw={'class': 'btn btn-primary btn-lg'})
 
 def zipdir(path, ziph):
     # ziph is zipfile handle
@@ -38,7 +37,7 @@ def zipdir(path, ziph):
             ziph.write(os.path.join(root, file))
 
 
-def chunks(input_list, batch_size):
+def chunkify(input_list, batch_size):
     for i in range(0, len(input_list), batch_size):
         yield input_list[i:i + batch_size]
 
@@ -59,7 +58,7 @@ def downloaded():
         unique_lines = list(set(all_lines))
         output_list = unique_lines if deduplicate else all_lines
         if split:
-            split_list = chunks(output_list, batch_size)
+            split_list = chunkify(output_list, batch_size)
             for idx, s in enumerate(split_list):
                 with open(f'{output_dir}/{idx}.csv', 'w') as out_f:
                     out_f.writelines(s)

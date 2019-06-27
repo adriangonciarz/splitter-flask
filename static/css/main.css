@@ -1,0 +1,18 @@
+body {
+  background-color: lightblue;
+}
+
+
+.red {
+    font-size: 14px;
+    color: red;
+}
+
+.green {
+    font-size: 14px;
+    color: green;
+}
+
+form {
+    left-margin: 20px;
+}
